@@ -1,0 +1,24 @@
+package tierPSO;
+
+import java.util.ArrayList;
+
+public class Tier {
+	private Tier parent;
+	private ArrayList<Tier> children;
+	
+	public Tier() {
+		children = new ArrayList<Tier>();
+	}
+	public Tier(Tier parent) {
+		this.parent = parent;
+		children = new ArrayList<Tier>();
+	}
+	
+	public void addTier(Tier child) {
+		children.add(child);
+	}
+	
+	public void removeTier(Tier child) {
+		children.remove(child);
+	}
+}

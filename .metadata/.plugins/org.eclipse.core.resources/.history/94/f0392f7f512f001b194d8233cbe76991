@@ -1,0 +1,36 @@
+package tierPSO;
+
+import java.util.ArrayList;
+
+public class Tier {
+	private Tier parent;
+	private ArrayList<Tier> children;
+	private double[] location;
+	private double[] personalBest;
+	
+	public Tier(double[] location) {
+		children = new ArrayList<Tier>();
+		this.location = location;
+	}
+	public Tier(Tier parent, double[] location) {
+		this.parent = parent;
+		children = new ArrayList<Tier>();
+		this.location = location;
+	}
+	
+	public void addTier(Tier child) {
+		children.add(child);
+	}
+	
+	public void removeTier(Tier child) {
+		children.remove(child);
+	}
+	
+	public void updateLocation(double[] location) {
+		this.location = location;
+	}
+	
+	public double[] getLocation() {
+		return location;
+	}
+}
