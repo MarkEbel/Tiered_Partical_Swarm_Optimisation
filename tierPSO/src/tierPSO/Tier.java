@@ -41,33 +41,32 @@ public class Tier {
 	 * currently only uses particles in current tier to update this needs to be changed!!!!
 	 * want outer tiers to influence as then can dissolve tiers
 	 */
-	
-	public void updateParticles() {
-		double[] tierAverage = new double[App.DIMENSIONS];
-        for(Particle particle: particles){
-            tierAverage = add(tierAverage, particle.getBestPosition());
-            
-        }
-        tierAverage = divide(tierAverage, particles.size());
-        
-        for(Particle particle: particles){
-        	particle.update(tierAverage);
-        }
-        
-        for(Tier tier: subTiers) {
-			tier.updateParticles();
-		}
-	}
-	
-
+		
 	public void updateParticles(double[] gbest) {
 		
-		for(Particle particle: particles){ 
-        	particle.update(gbest);	        	
-        }
-		for(Tier tier: subTiers) {
-			tier.updateParticles();
+		if(level == 0) {
+			for(Particle particle: particles){ 
+				particle.update(gbest);	        	
+			}			
+		} else {
+			double[] tierAverage = new double[App.DIMENSIONS];
+			
+			for(Particle particle: particles){
+				tierAverage = add(tierAverage, particle.getBestPosition());				
+			}
+			
+			tierAverage = divide(tierAverage, particles.size());
+			
+			for(Particle particle: particles){
+				particle.update(gbest, tierAverage, level);
+			}			
 		}
+		
+        
+        for(Tier tier: subTiers) {
+			tier.updateParticles(gbest);
+		}
+        
 	}
 	
 	private static double[] add(double[] input1, double[] input2){
@@ -102,11 +101,19 @@ public class Tier {
 		if(lower tier dissolves lower level of higher tiers)
 	}
 
-	public void addTierLevel(){
-		add tier to tiers and put particles in
+	public void addTierLevel(ArrayList<Particle> particlesForTier){
+		Tier newTier = new Tier(level + 1, this);
+		for(Particle particle: particlesForTier) {
+			particles.remove(particle);
+			newTier.addParticle(particle);
+		}
+		subTiers.add(newTier);
 	}
-	public void lowerTire(){
-		remove particles from tier and move particles to lower tier
-		
+	public void lowerTire(Tier t){
+		ArrayList<Particle> particlesForTier = t.getParticles();
+		for(Particle particle: particlesForTier) {
+			particles.add(particle);
+		}
+		subTiers.remove(t);
 	}
 }

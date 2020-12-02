@@ -51,6 +51,27 @@ public class Particle {
 		}
 	}
 	
+	/*
+	 * needs to be changed to incorporate tierAverage and level
+	 * 
+	 * */
+	
+	public void update(double[] gbest,double[] tierAverage, int level) {
+		double[] tempV = add(multiply(inertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(bestPosition, currentPosition)));
+		tempV = add(tempV,  multiply(multiply( getRandom(gbest.length), socialCo), subtract(gbest, currentPosition)));
+		double[] newPosition = add(currentPosition, velocity);
+		newPosition[newPosition.length - 1] = gbest.length/2.0;
+		Arrays.sort(newPosition); 
+		if(constraints(newPosition)) {
+			currentPosition = newPosition;
+			velocity = tempV;
+			if(bpCost > getCost(currentPosition)&&  getCost(currentPosition) > 0) {
+				bestPosition = currentPosition;
+				bpCost = getCost(bestPosition); 
+			}
+		}
+	}
+	
 	public double[] getBestPosition() {
 		return bestPosition;
 	}
