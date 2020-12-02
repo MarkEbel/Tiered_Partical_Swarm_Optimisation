@@ -1,4 +1,8 @@
-import java.util.*;
+package tierPSO;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /** Antenna array design problem */
 public class AntennaArray {
