@@ -25,16 +25,17 @@ public class Particle {
 	}
 	
 	public Particle(AntennaArray aa, double[] velocity, double[] currentPosition, double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
-		this.currentPosition = currentPosition;
-		this.velocity  = velocity;
-		bestPosition = currentPosition;
-		bpCost  = getCost(bestPosition);
 		Particle.aa = aa;
 		Particle.inertia = inertia;
 		Particle.cognitiveCo = cognitiveCo;
 		Particle.socialCo = socialCo;
 		Particle.bounds = bounds;
 		Particle.tierInertia = tierInertia;
+
+		this.currentPosition = currentPosition;
+		this.velocity  = velocity;
+		bestPosition = currentPosition;
+		bpCost  = getCost(bestPosition);
 	}
 	
 	public void update(double[] gbest) {
