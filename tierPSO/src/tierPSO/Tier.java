@@ -114,7 +114,8 @@ public class Tier {
 			
 //						if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
 
-//					if(tier particles < 2) dissolve	
+			
+			
 			if(particles.size() < 2) {
 				parent.lowerTire(this);
 			}
