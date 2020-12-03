@@ -9,8 +9,9 @@ public class Particle {
 	private double bpCost;
 	private double[] currentPosition;
 	private double[] bestPosition;
-	
+
 	private static double[] inertia;
+	private static double[] tierInertia;
 	private static double cognitiveCo;
 	private static double socialCo;
 	private static double[][] bounds;
@@ -23,7 +24,7 @@ public class Particle {
 		bpCost  = getCost(bestPosition);
 	}
 	
-	public Particle(AntennaArray aa, double[] velocity, double[] currentPosition, double[] inertia, double cognitiveCo, double socialCo, double[][] bounds) {
+	public Particle(AntennaArray aa, double[] velocity, double[] currentPosition, double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
 		this.currentPosition = currentPosition;
 		this.velocity  = velocity;
 		bestPosition = currentPosition;
@@ -33,6 +34,7 @@ public class Particle {
 		Particle.cognitiveCo = cognitiveCo;
 		Particle.socialCo = socialCo;
 		Particle.bounds = bounds;
+		Particle.tierInertia = tierInertia;
 	}
 	
 	public void update(double[] gbest) {
@@ -51,13 +53,9 @@ public class Particle {
 		}
 	}
 	
-	/*
-	 * needs to be changed to incorporate tierAverage and level
-	 * 
-	 * */
 	
-	public void update(double[] gbest,double[] tierAverage, int level) {
-		double[] tempV = add(multiply(inertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(bestPosition, currentPosition)));
+	public void update(double[] gbest,double[] tierAverage) {
+		double[] tempV = add(multiply(tierInertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(tierAverage, currentPosition)));
 		tempV = add(tempV,  multiply(multiply( getRandom(gbest.length), socialCo), subtract(gbest, currentPosition)));
 		double[] newPosition = add(currentPosition, velocity);
 		newPosition[newPosition.length - 1] = gbest.length/2.0;
@@ -74,6 +72,9 @@ public class Particle {
 	
 	public double[] getBestPosition() {
 		return bestPosition;
+	}
+	public double[] getCurrentPosition() {
+		return currentPosition;
 	}
 	public double getBestCost() {
 		return bpCost;

@@ -21,17 +21,17 @@ public class App {
 	
 	
 	public static void main(String[] args) {
-		pso(new double[] {0.6,0.6,0.6}, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
+		pso(new double[] {0.6,0.6,0.6},new double[] {0.6,0.6,0.6}, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
 	}
 	
 	
 	
 
 	
-	private static void pso(double[] inertia, double cognitiveCo, double socialCo, double[][] bounds) {
+	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
 		Tier tierZero = new Tier(0, null);
 		AntennaArray aa = new AntennaArray(3, 90);
-		tierZero.addParticle(new Particle(aa, randomVelocity(), randomSolution(aa), inertia, cognitiveCo, socialCo, bounds));
+		tierZero.addParticle(new Particle(aa, randomVelocity(), randomSolution(aa), inertia,tierInertia, cognitiveCo, socialCo, bounds));
 	    for(int i = 0; i < NUM_OF_PARTICLES - 1; i++){
 	        tierZero.addParticle(new Particle(randomSolution(aa), randomVelocity()));
 	    }

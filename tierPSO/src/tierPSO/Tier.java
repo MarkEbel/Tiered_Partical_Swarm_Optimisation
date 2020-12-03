@@ -58,7 +58,7 @@ public class Tier {
 			tierAverage = divide(tierAverage, particles.size());
 			
 			for(Particle particle: particles){
-				particle.update(gbest, tierAverage, level);
+				particle.update(gbest, tierAverage);
 			}			
 		}
 		
@@ -93,12 +93,34 @@ public class Tier {
 		
 		// how to get over problem of minimum particle number being too small to create new tier
 		// for loop through particles and then for loop within that to see if any particles are close enough
-		if(particle 1 and 2 and 3 all close enough goes into tier)
-		if(already tier add new particles)
-			if(particles equals max create new tier)
-		if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
-		if(tier doesnt contain enough particles dissolve tier)
-		if(lower tier dissolves lower level of higher tiers)
+		if(level == 0) {
+			// cannot dissolve this tier
+		} else {
+//			if(particle 1 and 2 and 3 all close enough goes into tier)
+			
+//				if(already tier add new particles)
+			
+//					if(particles equals max create new tier)
+			
+//						if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
+
+//							if(tier doesnt contain enough particles dissolve tier)
+			
+		}
+		
+		 for(Tier tier: subTiers) {
+				tier.updateTier();
+			}
+	}
+	
+	
+	private double distanceBetweenPositions(double[] position1, double[] position2) {
+		double value = 0;
+		for(int i=0; i < position1.length; i++) {
+			value += Math.pow(position1[i] - position2[i], 2);
+		}
+		value = Math.sqrt(value);
+		return value;
 	}
 
 	public void addTierLevel(ArrayList<Particle> particlesForTier){
@@ -109,6 +131,9 @@ public class Tier {
 		}
 		subTiers.add(newTier);
 	}
+	
+//								if(lower tier dissolves lower level of higher tiers)			
+	// need to lower tiers within tiers
 	public void lowerTire(Tier t){
 		ArrayList<Particle> particlesForTier = t.getParticles();
 		for(Particle particle: particlesForTier) {
