@@ -88,22 +88,34 @@ public class Tier {
 	}
 	
 	
+	// adds new tiers and removes tiers based on critera
 	public void updateTier(){
-	    // adds new tiers and removes tiers based on critera
 		
-		// how to get over problem of minimum particle number being too small to create new tier
-		// for loop through particles and then for loop within that to see if any particles are close enough
-		if(level == 0) {
-			// cannot dissolve this tier
-		} else {
+		
+// 			check if particles are close enough to current subtiers if so add to tier
+		for(Particle p: particles) {
+			for(Tier tier: subTiers) {
+				if(closeEnoughToTier(p, tier)) {
+					tier.addParticle(p);
+					particles.remove(p);
+				}
+			}
+			
 //			if(particle 1 and 2 and 3 all close enough goes into tier)
+			ArrayList<Particle> potentialNeighbours = particlesCloseEnough(p);
+			if(!potentialNeighbours.isEmpty()) {
+				addTier(potentialNeighbours);
+			}
+		}
+		
+		if(level != 0) {
+					
 			
-//				if(already tier add new particles)
-			
-//					if(particles equals max create new tier)
 			
 //						if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
 
+//					if(tier particles < 2) dissolve	
+			
 			
 		}
 		
@@ -112,7 +124,35 @@ public class Tier {
 			}
 	}
 	
+	public ArrayList<Particle> particlesCloseEnough(Particle p){
+		ArrayList<Particle> potentialNeighbours = new ArrayList<Particle>();
+		for(Particle particle: particles) {
+			if(particle.equals(p)) {
+				continue;
+			}
+			if(App.DISTANCE_BETWEEN_PARTICLES_FOR_TIER/(level + 1) >= distanceBetweenPositions(p.getCurrentPosition(), particle.getCurrentPosition())) {
+				potentialNeighbours.add(particle);
+			}
+		}
+		
+		return potentialNeighbours;			
+	}
 	
+	public boolean closeEnoughToTier(Particle p,Tier t) {
+		int numOfParticlesCloseTo = 0;
+		for(Particle particle: t.particles) {
+			if(App.DISTANCE_BETWEEN_PARTICLES_FOR_TIER/t.level >= distanceBetweenPositions(p.getCurrentPosition(), particle.getCurrentPosition())) {
+				numOfParticlesCloseTo ++;
+			}			
+		}
+		
+		if(numOfParticlesCloseTo >= App.MINIMUN_PARTICLES_THAT_ARE_CLOSE) {
+			return true;
+		}
+		return false;
+	}
+	
+
 	private double distanceBetweenPositions(double[] position1, double[] position2) {
 		double value = 0;
 		for(int i=0; i < position1.length; i++) {
@@ -122,7 +162,7 @@ public class Tier {
 		return value;
 	}
 
-	public void addTierLevel(ArrayList<Particle> particlesForTier){
+	public void addTier(ArrayList<Particle> particlesForTier){
 		Tier newTier = new Tier(level + 1, this);
 		for(Particle particle: particlesForTier) {
 			particles.remove(particle);

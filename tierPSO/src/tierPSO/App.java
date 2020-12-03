@@ -7,21 +7,20 @@ import java.util.Random;
 public class App {
 	private final static int MAX_TIERS = 1;
 	private final static int NUM_OF_PARTICLES = 50;
-	private final static int MAX_PARTICLES_PER_TIER = (int) Math.floor(NUM_OF_PARTICLES/ 5);
 	public final static int DIMENSIONS = 3;
 	private final static int ITERATIONS = 50;
-	private final static int DISTANCE_BETWEEN_PARTICLES_FOR_TIER= 1;
-	private final static double TIER_INERTIA = 0.5;
-	private final static double GlOBAL_INERTIA = 0.1;
-	
 
+	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER= 0.2;
+	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
+	public final static double[] TIER_INERTIA = new double[] {0.6,0.6,0.6};
+	public final static double GlOBAL_INERTIA = 0.1;
 	public static final double MINIMUMSPACING = 0.25;
 	
 	
 	
 	
 	public static void main(String[] args) {
-		pso(new double[] {0.6,0.6,0.6},new double[] {0.6,0.6,0.6}, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
+		pso(new double[] {0.6,0.6,0.6},TIER_INERTIA, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
 	}
 	
 	
