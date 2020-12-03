@@ -104,7 +104,6 @@ public class Tier {
 			
 //						if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
 
-//							if(tier doesnt contain enough particles dissolve tier)
 			
 		}
 		
@@ -132,13 +131,23 @@ public class Tier {
 		subTiers.add(newTier);
 	}
 	
-//								if(lower tier dissolves lower level of higher tiers)			
-	// need to lower tiers within tiers
 	public void lowerTire(Tier t){
 		ArrayList<Particle> particlesForTier = t.getParticles();
 		for(Particle particle: particlesForTier) {
 			particles.add(particle);
 		}
-		subTiers.remove(t);
+		 for(Tier tier: t.subTiers) {
+				tier.lowerLevels();
+			}
+		 subTiers.remove(t);
+	}
+	
+	public void lowerLevels() {
+		if(level != 0) {
+			level --;
+		}
+		for(Tier tier: subTiers) {
+				tier.lowerLevels();
+		}
 	}
 }
