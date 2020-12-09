@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class App {
-	private final static int MAX_TIERS = 1;
 	private final static int NUM_OF_PARTICLES = 50;
 	public final static int DIMENSIONS = 3;
 	private final static int ITERATIONS = 50;
@@ -21,13 +21,37 @@ public class App {
 	
 	public static void main(String[] args) {
 		pso(new double[] {0.6,0.6,0.6},TIER_INERTIA, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
+		System.out.println();
+		randomSearch();
+	}
+	private static void outputSolution(double[] gbest, double cost) {
+
+		System.out.println("Solution: \n");
+		for(double section: gbest) {
+			System.out.print(section + "  ");
+		}
+		System.out.print("\nCost " + cost + "  ");
 	}
 	
 	
-	
-
+	private static void randomSearch() {
+		
+		AntennaArray aa = new AntennaArray(3, 90);
+		double[] gbest = randomSolution(aa);
+	    double gbestCost = aa.evaluate(gbest);
+		for(int i = 0; i < 50; i++) {
+			double[] a = randomSolution(aa);
+			if(aa.evaluate(a) < gbestCost) {
+				gbest = a;
+				gbestCost = aa.evaluate(a);
+			}
+		}
+		System.out.println("\nRandom Search");
+		outputSolution(gbest, gbestCost);
+	}
 	
 	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
+		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
 		AntennaArray aa = new AntennaArray(3, 90);
 		tierZero.addParticle(new Particle(aa, randomVelocity(), randomSolution(aa), inertia,tierInertia, cognitiveCo, socialCo, bounds));
@@ -35,9 +59,9 @@ public class App {
 	        tierZero.addParticle(new Particle(randomSolution(aa), randomVelocity()));
 	    }
 
+	    double[] gbest = new double[DIMENSIONS];
+	    double gbestCost = 0;
 	    for(int i = 0; i < ITERATIONS; i++){
-	        double[] gbest = new double[DIMENSIONS];
-	        double gbestCost = 0;
 
 	        for(Particle particle: tierZero.getParticles()){
 	        	
@@ -56,6 +80,7 @@ public class App {
 	        tierZero.updateParticles(gbest);
 	        tierZero.updateTier();
 	    }
+	    outputSolution(gbest, gbestCost);
 	}
 		
 	

@@ -93,11 +93,14 @@ public class Tier {
 		
 		
 // 			check if particles are close enough to current subtiers if so add to tier
-		for(Particle p: particles) {
+		ArrayList<Particle> allParticles = (ArrayList<Particle>) particles.clone();
+		for(Particle p: allParticles) {
 			for(Tier tier: subTiers) {
-				if(closeEnoughToTier(p, tier)) {
-					tier.addParticle(p);
-					particles.remove(p);
+				if(particles.contains(p)) {
+					if(closeEnoughToTier(p, tier)) {
+						tier.addParticle(p);
+						particles.remove(p);
+					}					
 				}
 			}
 			
@@ -112,19 +115,27 @@ public class Tier {
 					
 			
 			
-//						if(particle distances is too small get rid of particle from tier but only if tier lower tier dissolves/ has enough room for particles)
-
-			
+//			if ( particle is not near rest of tier) then kick it out to parent
+			// reverse of allParticles section
+			for(Particle p: allParticles) {
+				if(particles.contains(p)) {
+					if(!closeEnoughToTier(p, this)) { // might need editing for this!!
+						parent.addParticle(p);
+						particles.remove(p);
+					}					
+				}
+			}
 			
 			if(particles.size() < 2) {
 				parent.lowerTire(this);
 			}
 			
 		}
-		
-		 for(Tier tier: subTiers) {
+		ArrayList<Tier> copyOfSubTiers = (ArrayList<Tier>) subTiers.clone();
+		 for(Tier tier: copyOfSubTiers) {
 				tier.updateTier();
 			}
+		 subTiers = copyOfSubTiers;
 	}
 	
 	public ArrayList<Particle> particlesCloseEnough(Particle p){
@@ -144,6 +155,9 @@ public class Tier {
 	public boolean closeEnoughToTier(Particle p,Tier t) {
 		int numOfParticlesCloseTo = 0;
 		for(Particle particle: t.particles) {
+			if(p.equals(particle)) {
+				continue;
+			}
 			if(App.DISTANCE_BETWEEN_PARTICLES_FOR_TIER/t.level >= distanceBetweenPositions(p.getCurrentPosition(), particle.getCurrentPosition())) {
 				numOfParticlesCloseTo ++;
 			}			
