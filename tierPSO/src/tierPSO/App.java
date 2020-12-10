@@ -59,25 +59,35 @@ public class App {
 	        tierZero.addParticle(new Particle(randomSolution(aa), randomVelocity()));
 	    }
 
-	    double[] gbest = new double[DIMENSIONS];
-	    double gbestCost = 0;
+    	double[] gbest = new double[DIMENSIONS];
+    	double gbestCost = 0;
+    	
 	    for(int i = 0; i < ITERATIONS; i++){
+	    	double[] gbestNotInTier = new double[DIMENSIONS];
+	    	double gbestCostNotInTier = 0;
 
 	        for(Particle particle: tierZero.getParticles()){
 	        	
-                if(gbestCost == 0){
-                    gbest = particle.getBestPosition();
-                    gbestCost = Particle.getCost(gbest);
+                if(gbestCostNotInTier == 0){
+                	if(gbestCost == 0) {
+                    	gbest = particle.getBestPosition();
+                    	gbestCost = Particle.getCost(gbestNotInTier);	
+                	}
+                	gbestNotInTier = particle.getBestPosition();
+                	gbestCostNotInTier = Particle.getCost(gbestNotInTier);
                 } else {
-                    if(gbestCost < Particle.getCost(particle.getBestPosition())){
-                    gbest = particle.getBestPosition();
-                    gbestCost = Particle.getCost(gbest);
+                    if(gbestCostNotInTier < Particle.getCost(particle.getBestPosition())){
+                    	gbestNotInTier = particle.getBestPosition();
+                    	gbestCostNotInTier = Particle.getCost(gbestNotInTier);
                     }
                 }
 	            
 	        }
-
-	        tierZero.updateParticles(gbest);
+	        if(gbestCost > gbestCostNotInTier) {
+	        	gbestCost = gbestCostNotInTier;
+	        	gbest = gbestNotInTier;
+	        }
+	        tierZero.updateParticles(gbestNotInTier);
 	        tierZero.updateTier();
 	    }
 	    outputSolution(gbest, gbestCost);

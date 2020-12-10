@@ -56,7 +56,8 @@ public class Particle {
 	
 	
 	public void update(double[] gbest,double[] tierAverage) {
-		double[] tempV = add(multiply(tierInertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(tierAverage, currentPosition)));
+		
+		double[] tempV = add(multiply(tierInertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(bestPosition, currentPosition)));
 		tempV = add(tempV,  multiply(multiply( getRandom(gbest.length), socialCo), subtract(gbest, currentPosition)));
 		double[] newPosition = add(currentPosition, velocity);
 		newPosition[newPosition.length - 1] = gbest.length/2.0;
