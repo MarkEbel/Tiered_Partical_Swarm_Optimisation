@@ -170,7 +170,7 @@ public class Tier {
 	}
 	
 
-	private double distanceBetweenPositions(double[] position1, double[] position2) {
+	public static double distanceBetweenPositions(double[] position1, double[] position2) {
 		double value = 0;
 		for(int i=0; i < position1.length; i++) {
 			value += Math.pow(position1[i] - position2[i], 2);

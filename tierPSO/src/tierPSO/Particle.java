@@ -56,6 +56,11 @@ public class Particle {
 	
 	
 	public void update(double[] gbest,double[] tierAverage) {
+		// use tierAverage to find distance from current position then use this as a ratio for making V
+		// particles closer to average need to be pushed harder outwards
+		double dis = Tier.distanceBetweenPositions(currentPosition, tierAverage);
+		dis = App.DISTANCE_BETWEEN_PARTICLES_FOR_TIER/dis; // ??????
+		gbest = multiply(gbest, dis);
 		
 		double[] tempV = add(multiply(tierInertia,velocity) , multiply(multiply( getRandom(gbest.length), cognitiveCo), subtract(bestPosition, currentPosition)));
 		tempV = add(tempV,  multiply(multiply( getRandom(gbest.length), socialCo), subtract(gbest, currentPosition)));
