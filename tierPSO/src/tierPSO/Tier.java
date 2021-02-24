@@ -22,6 +22,10 @@ public class Tier {
 	public int getLevel() {
 		return level;
 	}
+	
+	public ArrayList<Tier> getSubTiers(){
+		return subTiers;
+	}
 	public void removeTier(Tier child) {
 		subTiers.remove(child);
 	}
@@ -91,6 +95,11 @@ public class Tier {
 	// adds new tiers and removes tiers based on critera
 	public void updateTier(){
 		
+		ArrayList<Tier> copyOfSubTiers = (ArrayList<Tier>) subTiers.clone();
+		for(Tier tier: copyOfSubTiers) {
+			tier.updateTier();
+		}
+		subTiers = copyOfSubTiers;
 		
 // 			check if particles are close enough to current subtiers if so add to tier
 		ArrayList<Particle> allParticles = (ArrayList<Particle>) particles.clone();
@@ -112,9 +121,6 @@ public class Tier {
 		}
 		
 		if(level != 0) {
-					
-			
-			
 //			if ( particle is not near rest of tier) then kick it out to parent
 			// reverse of allParticles section
 			for(Particle p: allParticles) {
@@ -125,17 +131,16 @@ public class Tier {
 					}					
 				}
 			}
-			
-			if(particles.size() < 2) {
-				parent.lowerTire(this);
+		}
+		// for all subtiers check size if less than 2 particles then lower Tier
+		ArrayList<Tier> cloneSubTiers = (ArrayList<Tier>) subTiers.clone();
+		// clone for comodification errors
+		for(Tier tier: cloneSubTiers) {
+			if(tier.getParticles().size() < 2) {
+				lowerTier(tier);
 			}
 			
 		}
-		ArrayList<Tier> copyOfSubTiers = (ArrayList<Tier>) subTiers.clone();
-		 for(Tier tier: copyOfSubTiers) {
-				tier.updateTier();
-			}
-		 subTiers = copyOfSubTiers;
 	}
 	
 	public ArrayList<Particle> particlesCloseEnough(Particle p){
@@ -182,13 +187,15 @@ public class Tier {
 	public void addTier(ArrayList<Particle> particlesForTier){
 		Tier newTier = new Tier(level + 1, this);
 		for(Particle particle: particlesForTier) {
-			particles.remove(particle);
 			newTier.addParticle(particle);
+			particles.remove(particle);
 		}
 		subTiers.add(newTier);
 	}
 	
-	public void lowerTire(Tier t){
+	public void lowerTier(Tier t){
+		// add subtier particles to this tier
+		// add subtiers to this tier
 		ArrayList<Particle> particlesForTier = t.getParticles();
 		for(Particle particle: particlesForTier) {
 			particles.add(particle);
@@ -203,9 +210,40 @@ public class Tier {
 	public void lowerLevels() {
 		if(level != 0) {
 			level --;
-		}
-		for(Tier tier: subTiers) {
+			for(Tier tier: subTiers) {
 				tier.lowerLevels();
+			}
 		}
+	}
+	
+	public Particle bestPosition(){
+		Particle best = null;
+		for(Particle p : particles) {
+			if(best == null) {
+				best = p;
+			} else {
+				if(best.getBestCost() < p.getBestCost()) {
+					best = p;
+				}
+			}
+		}
+		for(Tier t: subTiers) {
+			// if subtier best is better than this best return tha
+			
+			// for some reason  tiers contain zero particles 
+			// either update Tier or add tier or lower tier?
+			// tiers with zero particles are not being removed
+			// particles are going missing
+			System.out.println(t.getParticles().size());
+			if(t.bestPosition() != null && best != null) {
+				
+				if(t.bestPosition().getBestCost() < best.getBestCost()) {
+					best = t.bestPosition();
+				}				
+			} else {
+				best = t.bestPosition();
+			}
+		}
+		return best;
 	}
 }

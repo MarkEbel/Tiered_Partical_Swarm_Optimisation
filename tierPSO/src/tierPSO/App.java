@@ -1,14 +1,16 @@
 package tierPSO;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 
 public class App {
-	private final static int NUM_OF_PARTICLES = 50;
+	private final static int NUM_OF_PARTICLES = 500;
 	public final static int DIMENSIONS = 3;
-	private final static int ITERATIONS = 50;
+	private final static int ITERATIONS = 10;
 
 	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER= 0.2;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
@@ -21,8 +23,8 @@ public class App {
 	
 	public static void main(String[] args) {
 		pso(new double[] {0.6,0.6,0.6},TIER_INERTIA, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
-		System.out.println();
-		randomSearch();
+		//System.out.println();
+		//randomSearch();
 	}
 	private static void outputSolution(double[] gbest, double cost) {
 
@@ -59,8 +61,7 @@ public class App {
 	        tierZero.addParticle(new Particle(randomSolution(aa), randomVelocity()));
 	    }
 
-    	double[] gbest = new double[DIMENSIONS];
-    	double gbestCost = 0;
+    	
     	
 	    for(int i = 0; i < ITERATIONS; i++){
 	    	double[] gbestNotInTier = new double[DIMENSIONS];
@@ -69,10 +70,6 @@ public class App {
 	        for(Particle particle: tierZero.getParticles()){
 	        	
                 if(gbestCostNotInTier == 0){
-                	if(gbestCost == 0) {
-                    	gbest = particle.getBestPosition();
-                    	gbestCost = Particle.getCost(gbestNotInTier);	
-                	}
                 	gbestNotInTier = particle.getBestPosition();
                 	gbestCostNotInTier = Particle.getCost(gbestNotInTier);
                 } else {
@@ -83,14 +80,19 @@ public class App {
                 }
 	            
 	        }
-	        if(gbestCost > gbestCostNotInTier) {
-	        	gbestCost = gbestCostNotInTier;
-	        	gbest = gbestNotInTier;
+	        if(gbestCostNotInTier == 0) {
+	        	gbestNotInTier = randomSolution(aa);
 	        }
 	        tierZero.updateParticles(gbestNotInTier);
+
 	        tierZero.updateTier();
+	        System.out.println(tierZero.getParticles().size() + " This");
 	    }
-	    outputSolution(gbest, gbestCost);
+	    Particle gbest = tierZero.bestPosition();
+
+    	
+    	
+	    outputSolution(gbest.getBestPosition(), gbest.getBestCost());
 	}
 		
 	
@@ -104,7 +106,66 @@ public class App {
 //	    return location;
 //	    // location is not in a tier.
 //	}
+	
+	
+	private static double[] standardDeviation(Tier t) {
+		ArrayList<double[]> values = new ArrayList<double[]>();
+		ArrayList<Particle> particles = t.getParticles();
+				//t.getParticles();
+		for(Tier subTiers: t.getSubTiers()) {
+			particles.addAll(subTiers.getParticles());
+		}
+		for(Particle p: particles) {
+			values.add(p.getCurrentPosition());
+		}
+		double[] mean =  meanValue(values);
+		double[] diffSquarSum = new double[values.get(0).length];
+		for(double[] value: values) {
+			diffSquarSum = add(diffSquarSum, squared(minus(value, mean)));
+		}
+		diffSquarSum = divide(diffSquarSum, (values.size() - 1));
+		diffSquarSum = sqrtVector(diffSquarSum);
+		return diffSquarSum;
+	}
+	
+	private static void writeToCSV() throws IOException {
+		FileWriter csvWriter = new FileWriter("new.xcsv");
+		for (List<String> rowData : rows) {
+		    csvWriter.append(String.join(",", rowData));
+		    csvWriter.append("\n");
+		}
 
+		csvWriter.flush();
+		csvWriter.close();
+	}
+	
+	private static double[] meanValue(ArrayList<double[]> values) {
+		double[] total = new double[values.get(0).length];
+		for(double[] v: values) {
+			total = add(v, total);
+		}
+		total = divide(total, values.size());
+		return total;
+	}
+	
+	private static double[] divide(double[] input1, double input2){
+	    double[] a1 = input1.clone();
+	    double[] output = new double[a1.length];
+	    for(int i =0; i< a1.length; i++){
+	        output[i] = a1[i]/input2; 
+	    }
+	    return output;
+	}
+	
+	private static double[] add(double[] input1, double[] input2){
+		double[] a1 = input1.clone();
+		double[] a2 = input2.clone();
+		double[] output = new double[a1.length];
+		for(int i =0; i< a1.length; i++){
+			output[i] = a1[i] + a2[i]; 
+		}
+		return output;
+	}
 	public static double[] randomSolution(AntennaArray antArr) {
 		double[][] allBounds = antArr.bounds();
 		double[] design = new double[allBounds.length];
