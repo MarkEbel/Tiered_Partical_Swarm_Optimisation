@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import costFunctions.AntennaArray;
+
 
 
 public class App {
