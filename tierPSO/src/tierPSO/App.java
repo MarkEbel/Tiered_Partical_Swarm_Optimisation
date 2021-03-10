@@ -1,10 +1,12 @@
 package tierPSO;
 
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
 
 
 public class App {
@@ -25,6 +27,7 @@ public class App {
 		pso(new double[] {0.6,0.6,0.6},TIER_INERTIA, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
 		//System.out.println();
 		//randomSearch();
+		//writeToCSV("Blah");
 	}
 	private static void outputSolution(double[] gbest, double cost) {
 
@@ -62,7 +65,7 @@ public class App {
 	    }
 
     	
-    	
+    	String data = "";
 	    for(int i = 0; i < ITERATIONS; i++){
 	    	double[] gbestNotInTier = new double[DIMENSIONS];
 	    	double gbestCostNotInTier = 0;
@@ -83,11 +86,12 @@ public class App {
 	        if(gbestCostNotInTier == 0) {
 	        	gbestNotInTier = randomSolution(aa);
 	        }
+	        data += standardDeviation(tierZero) + "\n";
 	        tierZero.updateParticles(gbestNotInTier);
 
 	        tierZero.updateTier();
-	        System.out.println(tierZero.getParticles().size() + " This");
 	    }
+	    writeToCSV(data);
 	    Particle gbest = tierZero.bestPosition();
 
     	
@@ -108,7 +112,7 @@ public class App {
 //	}
 	
 	
-	private static double[] standardDeviation(Tier t) {
+	private static double standardDeviation(Tier t) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		ArrayList<Particle> particles = t.getParticles();
 				//t.getParticles();
@@ -119,24 +123,32 @@ public class App {
 			values.add(p.getCurrentPosition());
 		}
 		double[] mean =  meanValue(values);
-		double[] diffSquarSum = new double[values.get(0).length];
+		double diffSquarSum = 0;
 		for(double[] value: values) {
-			diffSquarSum = add(diffSquarSum, squared(minus(value, mean)));
+			diffSquarSum +=  euclideanDistanceSquared(value, mean);
 		}
-		diffSquarSum = divide(diffSquarSum, (values.size() - 1));
-		diffSquarSum = sqrtVector(diffSquarSum);
+		diffSquarSum = diffSquarSum/(values.size() - 1);
+		diffSquarSum = Math.sqrt(diffSquarSum);
 		return diffSquarSum;
 	}
-	
-	private static void writeToCSV() throws IOException {
-		FileWriter csvWriter = new FileWriter("new.xcsv");
-		for (List<String> rowData : rows) {
-		    csvWriter.append(String.join(",", rowData));
-		    csvWriter.append("\n");
+	private static double euclideanDistanceSquared(double[] v,double[] v2) {
+		double minusV = 0;
+		for(int i =0; i < v.length; i++) {
+			minusV += Math.pow((v[i] - v2[i]), 2);
 		}
-
-		csvWriter.flush();
-		csvWriter.close();
+		
+		
+		return minusV;
+		
+	}
+	
+	private static void writeToCSV(String data) {
+		try (PrintWriter writer = new PrintWriter(new File("data.csv"))){
+			writer.write(data);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private static double[] meanValue(ArrayList<double[]> values) {

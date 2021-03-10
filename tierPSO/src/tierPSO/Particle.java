@@ -3,6 +3,7 @@ package tierPSO;
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class Particle {
 
 	private double[] velocity;
