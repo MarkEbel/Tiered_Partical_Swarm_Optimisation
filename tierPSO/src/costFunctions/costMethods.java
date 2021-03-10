@@ -1,7 +1,7 @@
 package costFunctions;
 
 public interface costMethods {
-	public void evaluate(double[] position);
+	public double evaluate(double[] position);
 	public double[] randomSolution();	
 	
 }

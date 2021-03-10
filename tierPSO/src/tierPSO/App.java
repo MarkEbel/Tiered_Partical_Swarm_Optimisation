@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import costFunctions.AntennaArray;
+import costFunctions.*;
 
 
 
@@ -22,7 +22,7 @@ public class App {
 	public final static double GlOBAL_INERTIA = 0.1;
 	public static final double MINIMUMSPACING = 0.25;
 	
-	
+	public static final int cost = 0;
 	
 	
 	public static void main(String[] args) {
@@ -39,7 +39,31 @@ public class App {
 		}
 		System.out.print("\nCost " + cost + "  ");
 	}
+
+	private static SphereFunction sf = new SphereFunction();
+	private static HimmelblausFunction hf = new HimmelblausFunction();
+	private static StyblinskiTangFunction stf = new StyblinskiTangFunction();
+	private static ThreeHumpCamelFunction thcf = new ThreeHumpCamelFunction();
+	private static BukinsFunction bf = new BukinsFunction();
+	private static AntennaArray aa = new AntennaArray(3, 90);
 	
+	private static double positionCost(double[] position) {
+		switch(cost) {
+		case 0:
+			return aa.evaluate(position);
+		case 1:
+			return sf.evaluate(position);
+		case 2:
+			return hf.evaluate(position);
+		case 3:
+			return stf.evaluate(position);
+		case 4:
+			return thcf.evaluate(position);
+		case 5:
+			return bf.evaluate(position);
+		}
+		return 0;
+	}
 	
 	private static void randomSearch() {
 		
@@ -60,7 +84,7 @@ public class App {
 	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
 		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
-		AntennaArray aa = new AntennaArray(3, 90);
+		
 		tierZero.addParticle(new Particle(aa, randomVelocity(), randomSolution(aa), inertia,tierInertia, cognitiveCo, socialCo, bounds));
 	    for(int i = 0; i < NUM_OF_PARTICLES - 1; i++){
 	        tierZero.addParticle(new Particle(randomSolution(aa), randomVelocity()));

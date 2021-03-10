@@ -3,7 +3,8 @@ package costFunctions;
 public class BukinsFunction implements costMethods{
 
 	@Override
-	public void evaluate(double[] position) {
+	public double evaluate(double[] position) {
+		return 0;
 		// TODO Auto-generated method stub
 		
 	}
