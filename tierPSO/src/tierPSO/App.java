@@ -65,6 +65,24 @@ public class App {
 		return 0;
 	}
 	
+	private static double[] randomSolution() {
+		switch(cost) {
+		case 0:
+			return randomSolution(aa);
+		case 1:
+			return sf.randomSolution();
+		case 2:
+			return hf.randomSolution();
+		case 3:
+			return stf.randomSolution();
+		case 4:
+			return thcf.randomSolution();
+		case 5:
+			return bf.randomSolution();
+		}
+		return new double[0];
+	}
+	
 	private static void randomSearch() {
 		
 		AntennaArray aa = new AntennaArray(3, 90);
