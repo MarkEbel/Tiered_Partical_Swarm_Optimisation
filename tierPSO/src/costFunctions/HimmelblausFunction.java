@@ -1,18 +1,29 @@
 package costFunctions;
 
+import java.util.Random;
+
 public class HimmelblausFunction implements costMethods{
 
 	@Override
 	public double evaluate(double[] position) {
-		return 0;
-		// TODO Auto-generated method stub
-		
+		return Math.pow((Math.pow(position[0], 2) + position[1] - 11),2) + Math.pow((position[0] + Math.pow(position[1],2) - 7),2);
 	}
 
+
+	private Random random = new Random();
 	@Override
 	public double[] randomSolution() {
-		// TODO Auto-generated method stub
-		return null;
+		double[] tmp = new double[2];
+		tmp[0] = random.nextDouble() + random.nextInt(6);
+		tmp[1] = random.nextDouble() + random.nextInt(6);
+
+		if(random.nextBoolean()) {
+			tmp[0] = -tmp[0];
+		}
+		if(random.nextBoolean()) {
+			tmp[1] = -tmp[1];
+		}
+ 		return tmp;
 	}
 
 }

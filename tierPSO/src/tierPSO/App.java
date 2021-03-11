@@ -27,9 +27,7 @@ public class App {
 	
 	public static void main(String[] args) {
 		
-			for(int i =1; i <= 4; i++) {
-					System.out.println("aas");	
-					}
+		
 
 		
 		//pso(new double[] {0.6,0.6,0.6},TIER_INERTIA, 0.1, 0.1, new double[][] {{0,1},{0,1},{0,1}});
