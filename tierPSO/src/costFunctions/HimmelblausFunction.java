@@ -14,8 +14,8 @@ public class HimmelblausFunction implements costMethods{
 	@Override
 	public double[] randomSolution() {
 		double[] tmp = new double[2];
-		tmp[0] = random.nextDouble() + random.nextInt(5);
-		tmp[1] = random.nextDouble() + random.nextInt(5);
+		tmp[0] = random.nextDouble() + random.nextInt(6);
+		tmp[1] = random.nextDouble() + random.nextInt(6);
 
 		if(random.nextBoolean()) {
 			tmp[0] = -tmp[0];

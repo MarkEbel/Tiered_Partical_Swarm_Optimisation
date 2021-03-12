@@ -18,8 +18,8 @@ public class StyblinskiTangFunction implements costMethods{
 	@Override
 	public double[] randomSolution() {
 		double[] tmp = new double[2];
-		tmp[0] = random.nextDouble() + random.nextInt(4);
-		tmp[1] = random.nextDouble() + random.nextInt(4);
+		tmp[0] = random.nextDouble() + random.nextInt(5);
+		tmp[1] = random.nextDouble() + random.nextInt(5);
 	
 		if(random.nextBoolean()) {
 			tmp[0] = -tmp[0];
