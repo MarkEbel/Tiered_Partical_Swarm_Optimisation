@@ -22,11 +22,11 @@ public class App {
 	public final static double[] TIER_INERTIA = new double[] { 0.6, 0.6};
 	public final static double[] INERTIA = new double[] { 0.6, 0.6};
 
-	public static final int cost = 4;
+	public static final int cost = 1;
 
 	public static void main(String[] args) {
 
-		//pso(INERTIA, TIER_INERTIA, 0.1, 0.1);
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1);
 		// randomSearch();
 		//writeToCSV("Test3", "Test3");
 	}
@@ -125,12 +125,14 @@ public class App {
 			if (gbestCostNotInTier == 0) {
 				gbestNotInTier = randomSolution();
 			}
-			data += standardDeviation(tierZero) + "\n";
+			
+			data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+		
 			tierZero.updateParticles(gbestNotInTier);
-
 			tierZero.updateTier();
+
 		}
-		//writeToCSV(data);
+		writeToCSV(data, "sphereFunctionData");
 		Particle gbest = tierZero.bestPosition();
 
 		outputSolution(gbest.getBestPosition(), gbest.getBestCost());
@@ -175,6 +177,28 @@ public class App {
 		return minusV;
 
 	}
+
+	private static double standardDeviationFromMinimum(Tier t) {
+		ArrayList<double[]> values = new ArrayList<double[]>();
+		ArrayList<Particle> particles = t.getParticles();
+		// t.getParticles();
+		for (Tier subTiers : t.getSubTiers()) {
+			particles.addAll(subTiers.getParticles());
+		}
+		for (Particle p : particles) {
+			values.add(p.getCurrentPosition());
+		}
+		double[] mean = new double[values.size()];
+		double diffSquarSum = 0;
+		for (double[] value : values) {
+			diffSquarSum += euclideanDistanceSquared(value, mean);
+		}
+		diffSquarSum = diffSquarSum / (values.size() - 1);
+		diffSquarSum = Math.sqrt(diffSquarSum);
+		return diffSquarSum;
+	}
+
+	
 
 	private static void writeToCSV(String data, String fileName) {
 		try (PrintWriter writer = new PrintWriter(new File( fileName + ".csv"))) {
