@@ -3,7 +3,6 @@ package tierPSO;
 import java.util.Arrays;
 import java.util.Random;
 
-import costFunctions.AntennaArray;
 
 
 public class Particle {
@@ -17,8 +16,6 @@ public class Particle {
 	private static double[] tierInertia;
 	private static double cognitiveCo;
 	private static double socialCo;
-	private static double[][] bounds;
-	private static AntennaArray aa;
 	
 	public Particle(double[] currentPosition, double[] velocity) {
 		this.currentPosition = currentPosition;
@@ -27,12 +24,10 @@ public class Particle {
 		bpCost  = getCost(bestPosition);
 	}
 	
-	public Particle(AntennaArray aa, double[] velocity, double[] currentPosition, double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, double[][] bounds) {
-		Particle.aa = aa;
+	public Particle(double[] velocity, double[] currentPosition, double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo) {
 		Particle.inertia = inertia;
 		Particle.cognitiveCo = cognitiveCo;
 		Particle.socialCo = socialCo;
-		Particle.bounds = bounds;
 		Particle.tierInertia = tierInertia;
 
 		this.currentPosition = currentPosition;
@@ -106,10 +101,10 @@ public class Particle {
 //	}
 	
 	public boolean constraints(double[] position){
-		double[][] allBounds = aa.bounds();
+		double[][] allBounds = App.bounds();
 		int i = 0;
-		if(!Particle.aa.is_valid(position)) {
-			return false;
+		if(allBounds == null){
+			return true;
 		}
 		for(double[] bounds : allBounds) {
 			double lb = bounds[0];
@@ -118,32 +113,12 @@ public class Particle {
 				return false;
 			}
 			i++;
-		}			
-		
-		if(!minSpacing(position,App.MINIMUMSPACING)) {
-			return false;
-		}
-		
-		if(position[0] != position.length/2.0) {
-			return false;
-		}
+		}	
 		return true;
 	}
 	
 	
-	private static boolean minSpacing(double[] design, double minSpace) {
-		for(int i = 0; i < design.length; i++) {
-			for(int j = 0; j < design.length; j++) {
-				if(i == j) {
-					break;
-				}
-				if(minSpace > Math.abs(design[i] - design[j])) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+	
 	
 	private double[] add(double[] input1, double[] input2) {
 		double[] d1 = input1.clone();
@@ -188,7 +163,7 @@ public class Particle {
 	}
 	
 	public static double getCost(double[] position) {
-		return aa.evaluate(position);
+		return App.positionCost(position);
 	}
 	
 }

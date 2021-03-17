@@ -30,4 +30,10 @@ public class BukinsFunction implements costMethods{
 		
 	}
 
+	@Override
+	public double[][] bounds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

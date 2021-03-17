@@ -29,5 +29,10 @@ public class StyblinskiTangFunction implements costMethods{
 		}
 			return tmp;
 		}
+	@Override
+	public double[][] bounds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
