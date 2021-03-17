@@ -26,10 +26,9 @@ public class App {
 
 	public static void main(String[] args) {
 
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1);
-		// System.out.println();
+		//pso(INERTIA, TIER_INERTIA, 0.1, 0.1);
 		// randomSearch();
-		// writeToCSV("Blah");
+		//writeToCSV("Test3", "Test3");
 	}
 
 	private static void outputSolution(double[] gbest, double cost) {
@@ -131,7 +130,7 @@ public class App {
 
 			tierZero.updateTier();
 		}
-		writeToCSV(data);
+		//writeToCSV(data);
 		Particle gbest = tierZero.bestPosition();
 
 		outputSolution(gbest.getBestPosition(), gbest.getBestCost());
@@ -177,8 +176,8 @@ public class App {
 
 	}
 
-	private static void writeToCSV(String data) {
-		try (PrintWriter writer = new PrintWriter(new File("data.csv"))) {
+	private static void writeToCSV(String data, String fileName) {
+		try (PrintWriter writer = new PrintWriter(new File( fileName + ".csv"))) {
 			writer.write(data);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
