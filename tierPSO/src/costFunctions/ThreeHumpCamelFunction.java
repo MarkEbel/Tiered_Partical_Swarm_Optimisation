@@ -6,7 +6,7 @@ public class ThreeHumpCamelFunction implements costMethods{
 
 	@Override
 	public double evaluate(double[] position) {
-		return 2*Math.pow(position[0],2) - 1.05*Math.pow(position[0], 4) + (Math.pow(position[0], 6)/ 6) + position[0]*position[1] + Math.pow(position[0], 2);
+		return 2*Math.pow(position[0],2) - 1.05*Math.pow(position[0], 4) + (Math.pow(position[0], 6)/ 6) + position[0]*position[1] + Math.pow(position[1], 2);
 		// TODO Auto-generated method stub
 		
 	}

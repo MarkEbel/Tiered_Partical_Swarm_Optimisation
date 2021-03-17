@@ -22,7 +22,7 @@ public class App {
 	public final static double[] TIER_INERTIA = new double[] { 0.6, 0.6};
 	public final static double[] INERTIA = new double[] { 0.6, 0.6};
 
-	public static final int cost = 1;
+	public static final int cost = 4;
 
 	public static void main(String[] args) {
 
