@@ -23,6 +23,30 @@ public class Tier {
 		return level;
 	}
 	
+	public  ArrayList<Particle> getAllParticles() {
+		ArrayList<Particle> tmp = new ArrayList<Particle>();
+		tmp.addAll(particles);
+		if(subTiers.isEmpty()) {
+			return tmp;
+		}
+		for (Tier t : subTiers) {
+			tmp.addAll(t.getAllParticles());
+		}
+		return tmp;
+	}
+	
+	public int getNumOfTiers() {
+		int num = 0;
+		if(!subTiers.isEmpty()){
+			
+			num += subTiers.size();
+			for (Tier t : subTiers) {
+				t.getNumOfTiers();
+			}
+		}
+		return num;
+	}
+	
 	public ArrayList<Tier> getSubTiers(){
 		return subTiers;
 	}

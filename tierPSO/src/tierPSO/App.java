@@ -141,10 +141,10 @@ public class App {
 				data += Double.toString(standardDeviation(tierZero)) + "," + tierZero.bestPosition().getBestCost() + "\n";
 				break;
 			case 3:
-//				data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{-2.903534,-2.903534})) + ","  + Double.toString(standardDeviation(tierZero)) + "," + tierZero.getNumOfTiers() + "\n";
 				break;
 			case 4:
-//				data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{0,0})) + "," + tierZero.getNumOfTiers() + "\n";
 				break;
 			case 5:
 				data += tierZero.bestPosition().getBestCost() + "\n";
@@ -173,11 +173,8 @@ public class App {
 
 	private static double standardDeviation(Tier t) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
-		ArrayList<Particle> particles = t.getParticles();
-		// t.getParticles();
-		for (Tier subTiers : t.getSubTiers()) {
-			particles.addAll(subTiers.getParticles());
-		}
+		ArrayList<Particle> particles = t.getAllParticles();
+		
 		for (Particle p : particles) {
 			values.add(p.getCurrentPosition());
 		}
@@ -203,11 +200,8 @@ public class App {
 
 	private static double standardDeviationFromMinimum(Tier t, double[] position) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
-		ArrayList<Particle> particles = t.getParticles();
-		// t.getParticles();
-		for (Tier subTiers : t.getSubTiers()) {
-			particles.addAll(subTiers.getParticles());
-		}
+		ArrayList<Particle> particles = t.getAllParticles();
+
 		for (Particle p : particles) {
 			values.add(p.getCurrentPosition());
 		}
