@@ -15,18 +15,26 @@ import costFunctions.ThreeHumpCamelFunction;
 public class App {
 	private final static int NUM_OF_PARTICLES = 500;
 	public final static int DIMENSIONS = 2;
-	private final static int ITERATIONS = 10;
+	private final static int ITERATIONS = 100;
 
 	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.2;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
 	public final static double[] TIER_INERTIA = new double[] { 0.6, 0.6};
 	public final static double[] INERTIA = new double[] { 0.6, 0.6};
 
-	public static final int cost = 1;
+	public static int cost = 1;
 
 	public static void main(String[] args) {
 
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1);
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData");
+		cost = 2;
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData");
+		cost = 3;
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData");
+		cost = 4;
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"thcFunctionData");
+		cost = 5;
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"bFunctionData");
 		// randomSearch();
 		//writeToCSV("Test3", "Test3");
 	}
@@ -94,7 +102,7 @@ public class App {
 		return new double[0];
 	}
 
-	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo) {
+	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename) {
 		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
 
@@ -125,14 +133,29 @@ public class App {
 			if (gbestCostNotInTier == 0) {
 				gbestNotInTier = randomSolution();
 			}
-			
-			data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+			switch(cost) {
+			case 1:
+				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{0,0})) + "\n";
+				break;
+			case 2:
+				data += Double.toString(standardDeviation(tierZero)) + "," + tierZero.bestPosition().getBestCost() + "\n";
+				break;
+			case 3:
+//				data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+				break;
+			case 4:
+//				data += Double.toString(standardDeviationFromMinimum(tierZero)) + "\n";
+				break;
+			case 5:
+				data += tierZero.bestPosition().getBestCost() + "\n";
+				break;
+			}
 		
 			tierZero.updateParticles(gbestNotInTier);
 			tierZero.updateTier();
 
 		}
-		writeToCSV(data, "sphereFunctionData");
+		writeToCSV(data, filename);
 		Particle gbest = tierZero.bestPosition();
 
 		outputSolution(gbest.getBestPosition(), gbest.getBestCost());
@@ -178,7 +201,7 @@ public class App {
 
 	}
 
-	private static double standardDeviationFromMinimum(Tier t) {
+	private static double standardDeviationFromMinimum(Tier t, double[] position) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		ArrayList<Particle> particles = t.getParticles();
 		// t.getParticles();
@@ -188,10 +211,9 @@ public class App {
 		for (Particle p : particles) {
 			values.add(p.getCurrentPosition());
 		}
-		double[] mean = new double[values.size()];
 		double diffSquarSum = 0;
 		for (double[] value : values) {
-			diffSquarSum += euclideanDistanceSquared(value, mean);
+			diffSquarSum += euclideanDistanceSquared(value, position);
 		}
 		diffSquarSum = diffSquarSum / (values.size() - 1);
 		diffSquarSum = Math.sqrt(diffSquarSum);
