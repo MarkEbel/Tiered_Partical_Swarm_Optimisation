@@ -112,16 +112,16 @@ public class App {
 			 sf.setDimensions(dimensions);
 			 break;
 		case 2:
-			 hf.setDimensions(dimensions);
+			 hf.setDimensions(2);
 			 break;
 		case 3:
 			 stf.setDimensions(dimensions);
 			 break;
 		case 4:
-			 thcf.setDimensions(dimensions);
+			 thcf.setDimensions(2);
 			 break;
 		case 5:
-			 bf.setDimensions(dimensions);
+			 bf.setDimensions(2);
 			 break;
 		}
 		
