@@ -26,17 +26,16 @@ public class App {
 
 	public static void main(String[] args) {
 
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData");
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, 2);
 		cost = 2;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData");
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		cost = 3;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData");
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		cost = 4;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"thcFunctionData");
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"thcFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		cost = 5;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"bFunctionData");
-		// randomSearch();
-		//writeToCSV("Test3", "Test3");
+		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"bFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		
 	}
 
 	private static void outputSolution(double[] gbest, double cost) {
@@ -102,19 +101,39 @@ public class App {
 		return new double[0];
 	}
 
-	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename) {
+	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename, int iterations, int dimensions, int particlesNum) {
 		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
-
+		/**
+		 * Set dimension for particle
+		 */
+		switch (cost) {
+		case 1:
+			 sf.setDimensions(dimensions);
+			 break;
+		case 2:
+			 hf.setDimensions(dimensions);
+			 break;
+		case 3:
+			 stf.setDimensions(dimensions);
+			 break;
+		case 4:
+			 thcf.setDimensions(dimensions);
+			 break;
+		case 5:
+			 bf.setDimensions(dimensions);
+			 break;
+		}
+		
 		tierZero.addParticle(
-				new Particle(randomVelocity(), randomSolution(), inertia, tierInertia, cognitiveCo, socialCo));
-		for (int i = 0; i < NUM_OF_PARTICLES - 1; i++) {
-			tierZero.addParticle(new Particle(randomSolution(), randomVelocity()));
+				new Particle(randomVelocity(dimensions), randomSolution(), inertia, tierInertia, cognitiveCo, socialCo));
+		for (int i = 0; i < particlesNum - 1; i++) {
+			tierZero.addParticle(new Particle(randomSolution(), randomVelocity(dimensions)));
 		}
 
 		String data = "";
-		for (int i = 0; i < ITERATIONS; i++) {
-			double[] gbestNotInTier = new double[DIMENSIONS];
+		for (int i = 0; i < iterations; i++) {
+			double[] gbestNotInTier = new double[dimensions];
 			double gbestCostNotInTier = 0;
 
 			for (Particle particle : tierZero.getParticles()) {
@@ -254,10 +273,10 @@ public class App {
 	}
 
 
-	private static double[] randomVelocity() {
+	private static double[] randomVelocity(int dimensions) {
 		Random random = new Random();
-		double[] v = new double[DIMENSIONS];
-		for (int i = 0; i < DIMENSIONS; i++) {
+		double[] v = new double[dimensions];
+		for (int i = 0; i < dimensions; i++) {
 			v[i] = random.nextDouble();
 		}
 		return v;

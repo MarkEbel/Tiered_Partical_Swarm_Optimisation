@@ -6,6 +6,7 @@ public class SphereFunction implements costMethods{
 
 
 	private Random random = new Random();
+	private int dimensions = 2;
 	@Override
 	public double evaluate(double[] position) {
 		double tmp = 0.0;
@@ -19,15 +20,12 @@ public class SphereFunction implements costMethods{
 // within certain bounds
 	@Override
 	public double[] randomSolution() {
-		double[] tmp = new double[2];
-		tmp[0] = 0.12*random.nextDouble() + random.nextInt(5);
-		tmp[1] = 0.12*random.nextDouble() + random.nextInt(5);
-
-		if(random.nextBoolean()) {
-			tmp[0] = -tmp[0];
-		}
-		if(random.nextBoolean()) {
-			tmp[1] = -tmp[1];
+		double[] tmp = new double[dimensions];
+		for(int i = 0; i < dimensions; i++) {
+			tmp[i] = 0.12*random.nextDouble() + random.nextInt(5);			
+			if(random.nextBoolean()) {
+				tmp[i] = -tmp[i];
+			}
 		}
  		return tmp;
 	}
@@ -35,6 +33,10 @@ public class SphereFunction implements costMethods{
 	public double[][] bounds() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public void setDimensions(int dimensions2) {
+		// TODO Auto-generated method stub
+		dimensions = dimensions2;
 	}
 
 }

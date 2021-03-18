@@ -13,6 +13,7 @@ public class BukinsFunction implements costMethods{
 
 
 	private Random random = new Random();
+	private int dimensions;
 	
 	@Override
 	public double[] randomSolution() {
@@ -34,6 +35,11 @@ public class BukinsFunction implements costMethods{
 	public double[][] bounds() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setDimensions(int dimensions2) {
+		// TODO Auto-generated method stub
+		dimensions = dimensions2;
 	}
 
 }
