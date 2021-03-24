@@ -13,7 +13,7 @@ public class RidgeFunction implements CostMethods{
 		// TODO Auto-generated method stub
 		double fx = position[0];
 		double tmp = 0;
-		for(int i = 2; i <= dimensions; i++) {
+		for(int i = 2; i < dimensions; i++) {
 			tmp += Math.pow(position[i], 2);
 		}
 		fx += 2*Math.pow(tmp,0.1);
@@ -40,7 +40,7 @@ public class RidgeFunction implements CostMethods{
 		Arrays.fill(ub, 5);
 		double[] lb = new double[dimensions];
 		Arrays.fill(lb, -5);
-		double[][] tmp = new double[dimensions][];
+		double[][] tmp = new double[dimensions][2];
 		for(int i = 0; i < dimensions; i++) {
 			tmp[i][0] = ub[i];
 			tmp[i][1] = lb[i];

@@ -11,7 +11,7 @@ public class GriewankFunction implements CostMethods{
 		// TODO Auto-generated method stub
 		double fx = 1;
 		double tmp = 1;
-		for(int i = 1; i <= dimensions; i++) {
+		for(int i = 1; i < dimensions; i++) {
 			fx += Math.pow(position[i], 2);
 			tmp *= Math.cos(position[i]/Math.sqrt(i));
 		}

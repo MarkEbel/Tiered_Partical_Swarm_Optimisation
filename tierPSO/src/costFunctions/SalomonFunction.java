@@ -11,7 +11,7 @@ public class SalomonFunction implements CostMethods {
 		// TODO Auto-generated method stub
 		double fx = 1;
 		double tmp = 0;
-		for(int i = 2; i <= dimensions; i++) {
+		for(int i = 2; i < dimensions; i++) {
 			tmp += Math.pow(position[i], 2);
 		}
 		tmp = Math.sqrt(tmp);

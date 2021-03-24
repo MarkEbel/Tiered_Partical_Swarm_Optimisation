@@ -11,7 +11,7 @@ public class QingFunction implements CostMethods{
 	public double evaluate(double[] position) {
 		// TODO Auto-generated method stub
 		double fx = 0;
-		for(int i = 1; i <= dimensions; i++) {
+		for(int i = 1; i < dimensions; i++) {
 			fx += Math.pow((Math.pow(position[i], 2) - i),2);
 		}
 		

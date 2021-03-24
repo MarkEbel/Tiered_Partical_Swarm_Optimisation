@@ -9,9 +9,6 @@ import java.util.Random;
 import costFunctions.*;
 
 public class App {
-	private final static int NUM_OF_PARTICLES = 500;
-	public final static int DIMENSIONS = 2;
-	private final static int ITERATIONS = 100;
 
 	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.2;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
@@ -20,8 +17,11 @@ public class App {
 
 	private static ArrayList<CostMethods> cms = new ArrayList<CostMethods>();
 	private static int cost = 0;
+	public static int DIMENSIONS = 2;
 
 	public static void main(String[] args) {
+		int NUM_OF_PARTICLES = 500;
+		int ITERATIONS = 100;
 		cms.add(new SphereFunction());
 		cms.add(new StyblinskiTangFunction());
 		cms.add(new SalomonFunction());
@@ -37,7 +37,7 @@ public class App {
 		pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		
+		System.out.println("\n End");
 	}
 
 	private static void outputSolution(double[] gbest, double cost) {
@@ -62,16 +62,16 @@ public class App {
 		return cms.get(cost).randomSolution();
 	}
 
-	private static void pso(int cost2,double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename, int iterations, int dimensions, int particlesNum) {
+	private static void pso(int cost2,double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename, int iterations, int particlesNum, int dimensions) {
 		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
 		App.cost = cost2;
+		App.DIMENSIONS = dimensions;
 		/**
 		 * Set dimension for particle
 		 */
 
 		 cms.get(cost).setDimensions(dimensions);
-		
 		tierZero.addParticle(
 				new Particle(randomVelocity(dimensions), randomSolution(), inertia, tierInertia, cognitiveCo, socialCo));
 		for (int i = 0; i < particlesNum - 1; i++) {

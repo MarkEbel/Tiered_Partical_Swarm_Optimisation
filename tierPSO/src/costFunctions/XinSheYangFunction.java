@@ -11,7 +11,7 @@ public class XinSheYangFunction implements CostMethods{
 		// TODO Auto-generated method stub
 		double fx = 0;
 		double tmp = 0;
-		for(int i = 2; i <= dimensions; i++) {
+		for(int i = 2; i < dimensions; i++) {
 			fx += Math.abs(position[i]);
 			tmp += Math.sin(Math.pow(position[i],2));
 		}
