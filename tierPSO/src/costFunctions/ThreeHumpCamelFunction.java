@@ -38,4 +38,10 @@ public class ThreeHumpCamelFunction implements CostMethods{
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

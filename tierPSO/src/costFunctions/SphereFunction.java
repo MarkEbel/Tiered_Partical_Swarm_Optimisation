@@ -38,5 +38,10 @@ public class SphereFunction implements CostMethods{
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
 	}
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

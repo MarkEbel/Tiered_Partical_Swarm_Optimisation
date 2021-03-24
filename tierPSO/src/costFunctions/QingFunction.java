@@ -1,5 +1,6 @@
 package costFunctions;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class QingFunction implements CostMethods{
@@ -39,5 +40,10 @@ public class QingFunction implements CostMethods{
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
+	}
+
+	@Override
+	public double[] min() {
+		return null;
 	}
 }

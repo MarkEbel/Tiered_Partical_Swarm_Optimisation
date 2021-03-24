@@ -23,7 +23,6 @@ public class App {
 
 	public static void main(String[] args) {
 		cms.add(new SphereFunction());
-		cms.add(new HimmelblausFunction());
 		cms.add(new StyblinskiTangFunction());
 		cms.add(new SalomonFunction());
 		cms.add(new RidgeFunction());
@@ -31,14 +30,13 @@ public class App {
 		cms.add(new QingFunction());
 		cms.add(new XinSheYangFunction());
 		
-		pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, 2);
-		pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(7, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, DIMENSIONS);
+		pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		
 	}
 
@@ -102,24 +100,11 @@ public class App {
 				gbestNotInTier = randomSolution();
 			}
 			// THIS NEEDS SORTING OUT
-			ERROR
-			switch(cost) {
-			case 1:
-				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{0,0})) + "\n";
-				break;
-			case 2:
-				data += Double.toString(standardDeviation(tierZero)) + "," + tierZero.bestPosition().getBestCost() + "\n";
-				break;
-			case 3:
-				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{-2.903534,-2.903534})) + ","  + Double.toString(standardDeviation(tierZero)) + "," + tierZero.getNumOfTiers() + "\n";
-				break;
-			case 4:
-				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{0,0})) + "," + tierZero.getNumOfTiers() + "\n";
-				break;
-			case 5:
-				data += tierZero.bestPosition().getBestCost() + "\n";
-				break;
-			}
+			data += Double.toString(standardDeviationFromMinimum(tierZero, cms.get(cost).min()));
+			data += "," + Double.toString(standardDeviation(tierZero));
+			data += "," + tierZero.bestPosition().getBestCost();
+			data += "," + tierZero.getNumOfTiers();
+			data += "\n";
 		
 			tierZero.updateParticles(gbestNotInTier);
 			tierZero.updateTier();
@@ -171,6 +156,9 @@ public class App {
 	private static double standardDeviationFromMinimum(Tier t, double[] position) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		ArrayList<Particle> particles = t.getAllParticles();
+		if(position == null) {
+			position = new double[particles.get(0).getCurrentPosition().length];
+		}
 
 		for (Particle p : particles) {
 			values.add(p.getCurrentPosition());

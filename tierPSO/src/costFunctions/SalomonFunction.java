@@ -42,4 +42,10 @@ public class SalomonFunction implements CostMethods {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
 	}
+
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

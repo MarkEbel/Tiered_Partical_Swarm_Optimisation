@@ -1,6 +1,8 @@
 package costFunctions;
 
 import java.util.Random;
+import java.util.Arrays;
+
 
 public class StyblinskiTangFunction implements CostMethods{
 
@@ -15,7 +17,7 @@ public class StyblinskiTangFunction implements CostMethods{
 	
 
 	private Random random = new Random();
-	private int dimensions = 0;
+	private int dimensions = 2;
 	@Override
 	public double[] randomSolution() {
 		double[] tmp = new double[dimensions];
@@ -36,6 +38,14 @@ public class StyblinskiTangFunction implements CostMethods{
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
+	}
+
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		double[] tmp = new double[dimensions];
+		Arrays.fill(tmp, -2.903534);
+		return tmp;
 	}
 
 }

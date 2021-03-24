@@ -41,4 +41,10 @@ public class BukinsFunction implements CostMethods{
 		// TODO Auto-generated method stubs
 	}
 
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

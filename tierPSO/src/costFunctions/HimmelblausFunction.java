@@ -33,7 +33,11 @@ public class HimmelblausFunction implements CostMethods{
 	}
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
-		dimensions = dimensions2;
+	}
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -44,4 +44,10 @@ public class GriewankFunction implements CostMethods{
 		dimensions = dimensions2;
 	}
 
+	@Override
+	public double[] min() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

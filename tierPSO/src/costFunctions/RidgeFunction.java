@@ -1,5 +1,6 @@
 package costFunctions;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class RidgeFunction implements CostMethods{
@@ -34,13 +35,31 @@ public class RidgeFunction implements CostMethods{
 	@Override
 	public double[][] bounds() {
 		// TODO Auto-generated method stub
-		return null;
+
+		double[] ub = new double[dimensions];
+		Arrays.fill(ub, 5);
+		double[] lb = new double[dimensions];
+		Arrays.fill(lb, -5);
+		double[][] tmp = new double[dimensions][];
+		for(int i = 0; i < dimensions; i++) {
+			tmp[i][0] = ub[i];
+			tmp[i][1] = lb[i];
+		}
+		return tmp;
 	}
 
 	@Override
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
+	}
+
+	@Override
+	public double[] min() {
+
+		double[] tmp = new double[dimensions];
+		tmp[0] = -5;
+		return tmp;
 	}
 }
 
