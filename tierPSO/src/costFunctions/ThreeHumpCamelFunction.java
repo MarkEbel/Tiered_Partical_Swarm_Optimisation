@@ -2,7 +2,7 @@ package costFunctions;
 
 import java.util.Random;
 
-public class ThreeHumpCamelFunction implements costMethods{
+public class ThreeHumpCamelFunction implements CostMethods{
 
 	@Override
 	public double evaluate(double[] position) {
@@ -12,7 +12,7 @@ public class ThreeHumpCamelFunction implements costMethods{
 	}
 
 	private Random random = new Random();
-	private int dimensions;
+	private int dimensions = 2;
 	
 	@Override
 	public double[] randomSolution() {double[] tmp = new double[2];
@@ -36,7 +36,6 @@ public class ThreeHumpCamelFunction implements costMethods{
 
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
-		dimensions = dimensions2;
 	}
 
 }

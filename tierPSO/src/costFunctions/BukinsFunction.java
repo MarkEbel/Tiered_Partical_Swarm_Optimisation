@@ -2,7 +2,7 @@ package costFunctions;
 
 import java.util.Random;
 
-public class BukinsFunction implements costMethods{
+public class BukinsFunction implements CostMethods{
 
 	@Override
 	public double evaluate(double[] position) {
@@ -13,7 +13,7 @@ public class BukinsFunction implements costMethods{
 
 
 	private Random random = new Random();
-	private int dimensions;
+	private int dimensions = 2;
 	
 	@Override
 	public double[] randomSolution() {
@@ -38,8 +38,7 @@ public class BukinsFunction implements costMethods{
 	}
 
 	public void setDimensions(int dimensions2) {
-		// TODO Auto-generated method stub
-		dimensions = dimensions2;
+		// TODO Auto-generated method stubs
 	}
 
 }

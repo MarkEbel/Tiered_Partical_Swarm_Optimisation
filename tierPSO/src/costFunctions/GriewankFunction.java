@@ -2,38 +2,43 @@ package costFunctions;
 
 import java.util.Random;
 
-public class SphereFunction implements CostMethods{
+public class GriewankFunction implements CostMethods{
 
-
-	private Random random = new Random();
 	private int dimensions = 2;
+	private Random random = new Random();
 	@Override
 	public double evaluate(double[] position) {
-		double tmp = 0.0;
-		for(int i =0; i < position.length; i++) {
-			tmp += Math.pow(position[i], 2);
+		// TODO Auto-generated method stub
+		double fx = 1;
+		double tmp = 1;
+		for(int i = 1; i <= dimensions; i++) {
+			fx += Math.pow(position[i], 2);
+			tmp *= Math.cos(position[i]/Math.sqrt(i));
 		}
-		return tmp;
+		fx -= tmp;
 		
+		return fx;
 	}
-// give solutions in 2 dimensions therefore third axis is f(x)
-// within certain bounds
+
 	@Override
 	public double[] randomSolution() {
 		double[] tmp = new double[dimensions];
 		for(int i = 0; i < dimensions; i++) {
-			tmp[i] = 0.12*random.nextDouble() + random.nextInt(5);			
+			tmp[i] = random.nextDouble() + random.nextInt(500);			
 			if(random.nextBoolean()) {
 				tmp[i] = -tmp[i];
 			}
 		}
- 		return tmp;
+		return tmp;
 	}
+
 	@Override
 	public double[][] bounds() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;

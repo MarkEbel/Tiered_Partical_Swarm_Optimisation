@@ -2,41 +2,45 @@ package costFunctions;
 
 import java.util.Random;
 
-public class SphereFunction implements CostMethods{
+public class RidgeFunction implements CostMethods{
 
 
-	private Random random = new Random();
 	private int dimensions = 2;
+	private Random random = new Random();
 	@Override
 	public double evaluate(double[] position) {
-		double tmp = 0.0;
-		for(int i =0; i < position.length; i++) {
+		// TODO Auto-generated method stub
+		double fx = position[0];
+		double tmp = 0;
+		for(int i = 2; i <= dimensions; i++) {
 			tmp += Math.pow(position[i], 2);
 		}
-		return tmp;
-		
+		fx += 2*Math.pow(tmp,0.1);
+		return fx;
 	}
-// give solutions in 2 dimensions therefore third axis is f(x)
-// within certain bounds
+
 	@Override
 	public double[] randomSolution() {
 		double[] tmp = new double[dimensions];
 		for(int i = 0; i < dimensions; i++) {
-			tmp[i] = 0.12*random.nextDouble() + random.nextInt(5);			
+			tmp[i] = random.nextDouble() + random.nextInt(5);			
 			if(random.nextBoolean()) {
 				tmp[i] = -tmp[i];
 			}
 		}
- 		return tmp;
+		return tmp;
 	}
+
 	@Override
 	public double[][] bounds() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
 	public void setDimensions(int dimensions2) {
 		// TODO Auto-generated method stub
 		dimensions = dimensions2;
 	}
-
 }
+

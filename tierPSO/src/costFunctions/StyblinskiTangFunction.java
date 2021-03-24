@@ -2,7 +2,7 @@ package costFunctions;
 
 import java.util.Random;
 
-public class StyblinskiTangFunction implements costMethods{
+public class StyblinskiTangFunction implements CostMethods{
 
 	@Override
 	public double evaluate(double[] position) {double tmp = 0.0;

@@ -6,11 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
-import costFunctions.BukinsFunction;
-import costFunctions.HimmelblausFunction;
-import costFunctions.SphereFunction;
-import costFunctions.StyblinskiTangFunction;
-import costFunctions.ThreeHumpCamelFunction;
+import costFunctions.*;
 
 public class App {
 	private final static int NUM_OF_PARTICLES = 500;
@@ -22,19 +18,27 @@ public class App {
 	public final static double[] TIER_INERTIA = new double[] { 0.6, 0.6};
 	public final static double[] INERTIA = new double[] { 0.6, 0.6};
 
-	public static int cost = 1;
+	private static ArrayList<CostMethods> cms = new ArrayList<CostMethods>();
+	private static int cost = 0;
 
 	public static void main(String[] args) {
-
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, 2);
-		cost = 2;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		cost = 3;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		cost = 4;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"thcFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		cost = 5;
-		pso(INERTIA, TIER_INERTIA, 0.1, 0.1,"bFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		cms.add(new SphereFunction());
+		cms.add(new HimmelblausFunction());
+		cms.add(new StyblinskiTangFunction());
+		cms.add(new SalomonFunction());
+		cms.add(new RidgeFunction());
+		cms.add(new GriewankFunction());
+		cms.add(new QingFunction());
+		cms.add(new XinSheYangFunction());
+		
+		pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, 2);
+		pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"hFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		pso(7, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
 		
 	}
 
@@ -46,84 +50,29 @@ public class App {
 		}
 		System.out.print("\nCost " + cost + "  ");
 	}
-
-	private static SphereFunction sf = new SphereFunction();
-	private static HimmelblausFunction hf = new HimmelblausFunction();
-	private static StyblinskiTangFunction stf = new StyblinskiTangFunction();
-	private static ThreeHumpCamelFunction thcf = new ThreeHumpCamelFunction();
-	private static BukinsFunction bf = new BukinsFunction();
+	
 
 	public static double[][] bounds() {
-		switch (cost) {
-		case 1:
-			return sf.bounds();
-		case 2:
-			return hf.bounds();
-		case 3:
-			return stf.bounds();
-		case 4:
-			return thcf.bounds();
-		case 5:
-			return bf.bounds();
-		}
-		return null;
+		return cms.get(cost).bounds();
 	}
 
 	public static double positionCost(double[] position) {
-		switch (cost) {
-		case 1:
-			return sf.evaluate(position);
-		case 2:
-			return hf.evaluate(position);
-		case 3:
-			return stf.evaluate(position);
-		case 4:
-			return thcf.evaluate(position);
-		case 5:
-			return bf.evaluate(position);
-		}
-		return 0;
+		return cms.get(cost).evaluate(position);
 	}
 
 	public static double[] randomSolution() {
-		switch (cost) {
-		case 1:
-			return sf.randomSolution();
-		case 2:
-			return hf.randomSolution();
-		case 3:
-			return stf.randomSolution();
-		case 4:
-			return thcf.randomSolution();
-		case 5:
-			return bf.randomSolution();
-		}
-		return new double[0];
+		return cms.get(cost).randomSolution();
 	}
 
-	private static void pso(double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename, int iterations, int dimensions, int particlesNum) {
+	private static void pso(int cost2,double[] inertia, double[] tierInertia, double cognitiveCo, double socialCo, String filename, int iterations, int dimensions, int particlesNum) {
 		System.out.println("\nPSO solution");
 		Tier tierZero = new Tier(0, null);
+		App.cost = cost2;
 		/**
 		 * Set dimension for particle
 		 */
-		switch (cost) {
-		case 1:
-			 sf.setDimensions(dimensions);
-			 break;
-		case 2:
-			 hf.setDimensions(2);
-			 break;
-		case 3:
-			 stf.setDimensions(dimensions);
-			 break;
-		case 4:
-			 thcf.setDimensions(2);
-			 break;
-		case 5:
-			 bf.setDimensions(2);
-			 break;
-		}
+
+		 cms.get(cost).setDimensions(dimensions);
 		
 		tierZero.addParticle(
 				new Particle(randomVelocity(dimensions), randomSolution(), inertia, tierInertia, cognitiveCo, socialCo));
@@ -152,6 +101,8 @@ public class App {
 			if (gbestCostNotInTier == 0) {
 				gbestNotInTier = randomSolution();
 			}
+			// THIS NEEDS SORTING OUT
+			ERROR
 			switch(cost) {
 			case 1:
 				data += Double.toString(standardDeviationFromMinimum(tierZero, new double[]{0,0})) + "\n";
