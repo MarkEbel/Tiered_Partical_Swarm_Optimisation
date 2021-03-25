@@ -4,24 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import costFunctions.*;
 
 public class App {
 
-	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.2;
+	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.02;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
-	public final static double[] TIER_INERTIA = new double[] { 0.6, 0.6};
-	public final static double[] INERTIA = new double[] { 0.6, 0.6};
 
 	private static ArrayList<CostMethods> cms = new ArrayList<CostMethods>();
 	private static int cost = 0;
 	public static int DIMENSIONS = 2;
 
 	public static void main(String[] args) {
-		int NUM_OF_PARTICLES = 500;
-		int ITERATIONS = 100;
+		int NUM_OF_PARTICLES = 150;
+		int ITERATIONS = 1000;
 		cms.add(new SphereFunction());
 		cms.add(new StyblinskiTangFunction());
 		cms.add(new SalomonFunction());
@@ -30,13 +29,24 @@ public class App {
 		cms.add(new QingFunction());
 		cms.add(new XinSheYangFunction());
 		
-		pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionData", 100, 500, DIMENSIONS);
-		pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
-		pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionData", ITERATIONS, NUM_OF_PARTICLES, DIMENSIONS);
+		for(int i =9; i < 10; i++) {
+			for(int j = 50; j < NUM_OF_PARTICLES; j += 50) {
+				double[] TIER_INERTIA = new double[i];
+				double[] INERTIA = new double[i];
+				Arrays.fill(TIER_INERTIA, 0.6);
+				Arrays.fill(INERTIA, 0.6);
+				pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunction"+ j +"Data" + i, ITERATIONS, j, i);
+				pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunction"+ j +"Data"+ i, ITERATIONS, j, i);							
+			}
+		}
+		
+		
+		
 		System.out.println("\n End");
 	}
 
