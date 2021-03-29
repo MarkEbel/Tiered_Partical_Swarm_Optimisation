@@ -258,14 +258,15 @@ public class Tier {
 			// either update Tier or add tier or lower tier?
 			// tiers with zero particles are not being removed
 			// particles are going missing
-			if(t.bestPosition() != null && best != null) {
-				
-				if(t.bestPosition().getBestCost() < best.getBestCost()) {
+			if(t.bestPosition() != null) {
+				if( best != null) {
+					if(t.bestPosition().getBestCost() < best.getBestCost()) {
+						best = t.bestPosition();
+					}
+				} else {
 					best = t.bestPosition();
-				}				
-			} else {
-				best = t.bestPosition();
-			}
+				}
+			}				
 		}
 		return best;
 	}

@@ -45,7 +45,7 @@ public class Particle {
 		if(constraints(newPosition)) {
 			currentPosition = newPosition;
 			velocity = tempV;
-			if(bpCost > getCost(currentPosition)&&  getCost(currentPosition) > 0) {
+			if(bpCost > getCost(currentPosition)) {
 				bestPosition = currentPosition;
 				bpCost = getCost(bestPosition); 
 			}
@@ -68,7 +68,7 @@ public class Particle {
 		if(constraints(newPosition)) {
 			currentPosition = newPosition;
 			velocity = tempV;
-			if(bpCost > getCost(currentPosition)&&  getCost(currentPosition) > 0) {
+			if(bpCost > getCost(currentPosition)) {
 				bestPosition = currentPosition;
 				bpCost = getCost(bestPosition); 
 			}

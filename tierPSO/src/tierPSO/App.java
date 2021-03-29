@@ -11,7 +11,7 @@ import costFunctions.*;
 
 public class App {
 
-	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.02;
+	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 100;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
 
 	private static ArrayList<CostMethods> cms = new ArrayList<CostMethods>();
@@ -29,14 +29,26 @@ public class App {
 		cms.add(new QingFunction());
 		cms.add(new XinSheYangFunction());
 		
+//		App.DIMENSIONS = 9;
+//		App.cost = 4;
+//		cms.get(cost).setDimensions(9);
+//		double[] gbest = randomSolution();
+//		for(int i = 0; i < 1000; i++) {
+//			double[] tmp = randomSolution();
+//			if(positionCost(gbest) > positionCost(tmp)){
+//				gbest = tmp;
+//			}
+//		}
+//		outputSolution(gbest, positionCost(gbest));
+//		
 		for(int i =9; i < 10; i++) {
-			for(int j = 50; j < NUM_OF_PARTICLES; j += 50) {
-				double[] TIER_INERTIA = new double[i];
-				double[] INERTIA = new double[i];
-				Arrays.fill(TIER_INERTIA, 0.6);
-				Arrays.fill(INERTIA, 0.6);
+			double[] TIER_INERTIA = new double[i];
+			double[] INERTIA = new double[i];
+			Arrays.fill(TIER_INERTIA, 0.6);
+			Arrays.fill(INERTIA, 0.6);
+			for(int j = 100; j < NUM_OF_PARTICLES; j += 50) {
 				pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunction"+ j +"Data" + i, ITERATIONS, j, i);
-				pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunction"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunction" +j +"Data"+ i, ITERATIONS, j, i);
 				pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunction"+ j +"Data"+ i, ITERATIONS, j, i);
 				pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunction"+ j +"Data"+ i, ITERATIONS, j, i);
 				pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunction"+ j +"Data"+ i, ITERATIONS, j, i);
@@ -126,15 +138,7 @@ public class App {
 		outputSolution(gbest.getBestPosition(), gbest.getBestCost());
 	}
 
-//	private static double[] randomLocation(){
-//		Random random = new Random();
-//		double [] location = {};
-//		while(inTier(location) > 0) {
-//			location = random;
-//		}
-//	    return location;
-//	    // location is not in a tier.
-//	}
+
 
 	private static double standardDeviation(Tier t) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
