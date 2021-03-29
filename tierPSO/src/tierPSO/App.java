@@ -11,7 +11,7 @@ import costFunctions.*;
 
 public class App {
 
-	public final static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 100;
+	public  static double DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 100;
 	public final static int MINIMUN_PARTICLES_THAT_ARE_CLOSE = 3;
 
 	private static ArrayList<CostMethods> cms = new ArrayList<CostMethods>();
@@ -56,7 +56,23 @@ public class App {
 				pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunction"+ j +"Data"+ i, ITERATIONS, j, i);							
 			}
 		}
-		
+
+		DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0;
+		for(int i =9; i < 10; i++) {
+			double[] TIER_INERTIA = new double[i];
+			double[] INERTIA = new double[i];
+			Arrays.fill(TIER_INERTIA, 0.6);
+			Arrays.fill(INERTIA, 0.6);
+			for(int j = 100; j < NUM_OF_PARTICLES; j += 50) {
+				pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunctionNormalPSO"+ j +"Data" + i, ITERATIONS, j, i);
+				pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunctionNormalPSO" +j +"Data"+ i, ITERATIONS, j, i);
+				pso(2, INERTIA, TIER_INERTIA, 0.1, 0.1,"sFunctionNormalPSO"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(3, INERTIA, TIER_INERTIA, 0.1, 0.1,"rFunctionNormalPSO"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(4, INERTIA, TIER_INERTIA, 0.1, 0.1,"gFunctionNormalPSO"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(5, INERTIA, TIER_INERTIA, 0.1, 0.1,"qFunctionNormalPSO"+ j +"Data"+ i, ITERATIONS, j, i);
+				pso(6, INERTIA, TIER_INERTIA, 0.1, 0.1,"xFunctionNormalPSO"+ j +"Data"+ i, ITERATIONS, j, i);							
+			}
+		}
 		
 		
 		System.out.println("\n End");
