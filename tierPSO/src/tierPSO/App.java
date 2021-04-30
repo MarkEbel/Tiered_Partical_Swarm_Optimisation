@@ -19,6 +19,7 @@ public class App {
 	public static int DIMENSIONS = 2;
 
 	public static void main(String[] args) {
+		// Set variables used for different runs of the PSO
 		int NUM_OF_PARTICLES = 150;
 		int ITERATIONS = 1000;
 		cms.add(new SphereFunction());
@@ -29,23 +30,16 @@ public class App {
 		cms.add(new QingFunction());
 		cms.add(new XinSheYangFunction());
 		
-//		App.DIMENSIONS = 9;
-//		App.cost = 4;
-//		cms.get(cost).setDimensions(9);
-//		double[] gbest = randomSolution();
-//		for(int i = 0; i < 1000; i++) {
-//			double[] tmp = randomSolution();
-//			if(positionCost(gbest) > positionCost(tmp)){
-//				gbest = tmp;
-//			}
-//		}
-//		outputSolution(gbest, positionCost(gbest));
-//		
-		for(int i =9; i < 10; i++) {
+		// Iterates though dimensions
+		for(int i =6; i < 11; i++) {
+			// Line below scales the particle distance for each dimension
+			DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0.9*Math.pow(1.7, i) - 1.1*i; // works for dimension 6 and upwards
 			double[] TIER_INERTIA = new double[i];
 			double[] INERTIA = new double[i];
 			Arrays.fill(TIER_INERTIA, 0.6);
 			Arrays.fill(INERTIA, 0.6);
+			
+			// Iterates though groups of particles
 			for(int j = 100; j < NUM_OF_PARTICLES; j += 50) {
 				pso(0, INERTIA, TIER_INERTIA, 0.1, 0.1,"sphereFunction"+ j +"Data" + i, ITERATIONS, j, i);
 				pso(1, INERTIA, TIER_INERTIA, 0.1, 0.1,"stFunction" +j +"Data"+ i, ITERATIONS, j, i);
@@ -57,8 +51,8 @@ public class App {
 			}
 		}
 
-		DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0;
-		for(int i =9; i < 10; i++) {
+		DISTANCE_BETWEEN_PARTICLES_FOR_TIER = 0; // This makes the algorithm run as standard PSO as cannot form tiers.
+		for(int i =6; i < 10; i++) {
 			double[] TIER_INERTIA = new double[i];
 			double[] INERTIA = new double[i];
 			Arrays.fill(TIER_INERTIA, 0.6);
@@ -108,7 +102,7 @@ public class App {
 		/**
 		 * Set dimension for particle
 		 */
-
+		// Initialises particles
 		 cms.get(cost).setDimensions(dimensions);
 		tierZero.addParticle(
 				new Particle(randomVelocity(dimensions), randomSolution(), inertia, tierInertia, cognitiveCo, socialCo));
@@ -117,12 +111,13 @@ public class App {
 		}
 
 		String data = "";
+		// For loop runs for set amount of iterations
 		for (int i = 0; i < iterations; i++) {
-			double[] gbestNotInTier = new double[dimensions];
+			double[] gbestNotInTier = new double[dimensions]; // used to find the best particle which is not in a tier
 			double gbestCostNotInTier = 0;
-
+			// Finds best global solution
 			for (Particle particle : tierZero.getParticles()) {
-
+				
 				if (gbestCostNotInTier == 0) {
 					gbestNotInTier = particle.getBestPosition();
 					gbestCostNotInTier = Particle.getCost(gbestNotInTier);
@@ -137,13 +132,14 @@ public class App {
 			if (gbestCostNotInTier == 0) {
 				gbestNotInTier = randomSolution();
 			}
-			// THIS NEEDS SORTING OUT
+			// Generates data for the CSV
 			data += Double.toString(standardDeviationFromMinimum(tierZero, cms.get(cost).min()));
 			data += "," + Double.toString(standardDeviation(tierZero));
 			data += "," + tierZero.bestPosition().getBestCost();
 			data += "," + tierZero.getNumOfTiers();
 			data += "\n";
-		
+			
+			// updates particles
 			tierZero.updateParticles(gbestNotInTier);
 			tierZero.updateTier();
 
@@ -155,7 +151,7 @@ public class App {
 	}
 
 
-
+	// Returns the standard deviation between all particles using euclidean distance.
 	private static double standardDeviation(Tier t) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		ArrayList<Particle> particles = t.getAllParticles();
@@ -183,6 +179,7 @@ public class App {
 
 	}
 
+	//Finds the standard deviation of all particles from the given position
 	private static double standardDeviationFromMinimum(Tier t, double[] position) {
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		ArrayList<Particle> particles = t.getAllParticles();
@@ -203,12 +200,10 @@ public class App {
 	}
 
 	
-
 	private static void writeToCSV(String data, String fileName) {
 		try (PrintWriter writer = new PrintWriter(new File( fileName + ".csv"))) {
 			writer.write(data);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

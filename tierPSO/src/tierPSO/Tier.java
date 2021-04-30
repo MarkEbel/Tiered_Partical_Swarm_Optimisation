@@ -65,11 +65,11 @@ public class Tier {
 	public void removeParticle(Particle p) {
 		particles.remove(p);
 	}
-	/**
-	 * currently only uses particles in current tier to update this needs to be changed!!!!
-	 * want outer tiers to influence as then can dissolve tiers
-	 */
-		
+	
+		/*
+		 * This updates all the particles, checks whether it is in a tier and updates accordingly
+		 * Tier level zero is not a tier but a tier class as for recursive methods it makes it more straightforward
+		 * */
 	public void updateParticles(double[] gbest) {
 		
 		if(level == 0) {
@@ -137,7 +137,7 @@ public class Tier {
 				}
 			}
 			
-//			if(particle 1 and 2 and 3 all close enough goes into tier)
+//			if(particle 1 and 2 and 3 all close enough goes into tier
 			ArrayList<Particle> potentialNeighbours = particlesCloseEnough(p);
 			if(!potentialNeighbours.isEmpty()) {
 				addTier(potentialNeighbours);
@@ -158,7 +158,7 @@ public class Tier {
 		}
 		// for all subtiers check size if less than 2 particles then lower Tier
 		ArrayList<Tier> cloneSubTiers = (ArrayList<Tier>) subTiers.clone();
-		// clone for comodification errors
+		// clone to avoid comodification errors
 		for(Tier tier: cloneSubTiers) {
 			if(tier.getParticles().size() < 2) {
 				lowerTier(tier);
@@ -167,6 +167,7 @@ public class Tier {
 		}
 	}
 	
+	// returns a list of potential particles that could form a tier
 	public ArrayList<Particle> particlesCloseEnough(Particle p){
 		ArrayList<Particle> potentialNeighbours = new ArrayList<Particle>();
 		for(Particle particle: particles) {
@@ -181,6 +182,7 @@ public class Tier {
 		return potentialNeighbours;			
 	}
 	
+	// if a particle is close enough to a tier to be added it will return true
 	public boolean closeEnoughToTier(Particle p,Tier t) {
 		int numOfParticlesCloseTo = 0;
 		for(Particle particle: t.particles) {
@@ -216,7 +218,7 @@ public class Tier {
 		}
 		subTiers.add(newTier);
 	}
-	
+	// removes tier but keeps subtiers and particles
 	public void lowerTier(Tier t){
 		// add subtier particles to this tier
 		// add subtiers to this tier
@@ -230,7 +232,7 @@ public class Tier {
 			}
 		 subTiers.remove(t);
 	}
-	
+	// lowers the level of a tier including its subtiers.
 	public void lowerLevels() {
 		if(level != 0) {
 			level --;
@@ -254,10 +256,7 @@ public class Tier {
 		for(Tier t: subTiers) {
 			// if subtier best is better than this best return tha
 			
-			// for some reason  tiers contain zero particles 
-			// either update Tier or add tier or lower tier?
-			// tiers with zero particles are not being removed
-			// particles are going missing
+			
 			if(t.bestPosition() != null) {
 				if( best != null) {
 					if(t.bestPosition().getBestCost() < best.getBestCost()) {
